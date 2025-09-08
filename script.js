@@ -1,3 +1,7 @@
+const cardcontainer=document.getElementById("card-container")
+const AddToCart =document.getElementById("AddToCart")
+
+
 const loadCatagorie = (params) => {
   fetch("https://openapi.programming-hero.com/api/categories")
     .then(res => res.json())
@@ -7,6 +11,7 @@ const loadCatagorie = (params) => {
 
 
 
+// Category
 
 const displaycatagorie = (categories) => {
   const CategoriesContainer = document.getElementById("CategoriesContainer")
@@ -42,6 +47,9 @@ const displaycatagorie = (categories) => {
 
 
 }
+
+// Card with category
+
 const loadCardByCategorie = (id) => {
   console.log(id);
 
@@ -67,7 +75,7 @@ const ShowcardByCategorie=(plants) => {
     plantcards.innerHTML = `
        <div class="h-[400px] w-[330px] border-4 rounded-lg border-none shadow-lg p-4">
         <img class="h-[179px] w-[298px] rounded-md " src="${plant.image}" alt="">
-        <h1 class="font-semibold">${plant.name}</h1>
+        <button class="font-semibold">${plant.name}</button>
         <p class="text-[12px]">${plant.description}</p>
         <div class="flex justify-between p-3">
             <button onclick="" class="bg-[#DCFCE7] rounded-md p-1 text-[#15803D]">${plant.category}</button>
@@ -81,19 +89,9 @@ const ShowcardByCategorie=(plants) => {
   }
 }
 
-
-
-
 loadCatagorie()
 
-
-
-
-
-
-
-
-
+//  ALL CARD
 
 const loadcard = () => {
   fetch("https://openapi.programming-hero.com/api/plants")
@@ -111,7 +109,7 @@ const dislpayCard = (plants) => {
     cards.innerHTML = `
        <div class="h-[400px] w-[330px] border-4 rounded-lg border-none shadow-lg p-4">
         <img class="h-[179px] w-[298px] rounded-md " src="${plant.image}" alt="">
-        <button onclick="loadPlantsDetail()" class="font-semibold mt-2">${plant.name}</button>
+        <button onclick="loadplantdetail(${plant.id})" class="font-semibold cursor-pointer mt-2">${plant.name}</button>
         <p class="text-[12px]">${plant.description}</p>
         <div class="flex justify-between p-3">
             <button  class="bg-[#DCFCE7] rounded-md p-1 text-[#15803D]">${plant.category}</button>
@@ -124,8 +122,52 @@ const dislpayCard = (plants) => {
     cardcontainer.append(cards)
   }
 }
-
 loadcard()
 
+const loadplantdetail=(id) =>{
+  const url=`https://openapi.programming-hero.com/api/plant/${id}`
+  // console.log(url);
+  fetch(url)
+  .then(res =>res.json())
+  .then((detail) =>dislplayplamtdetail(detail.plants))
+  
+}
 
+// {id: 1, image: 'https://i.ibb.co.com/cSQdg7tf/mango-min.jpg', name: 'Mango Tree', description: 'A fast-growing tropical tree that produces delicio…s sweet fruits are rich in vitamins and minerals.', category: 'Fruit Tree', …}
+// category
+// : 
+// "Fruit Tree"
+// description
+// : 
+// "A fast-growing tropical tree that produces delicious, juicy mangoes during summer. Its dense green canopy offers shade, while its sweet fruits are rich in vitamins and minerals."
+// id
+// : 
+// 1
+// image
+// : 
+// "https://i.ibb.co.com/cSQdg7tf/mango-min.jpg"
+// name
+// : 
+// "Mango Tree"
+// price
+// : 
+// 500
+// [[Prototype]]
+// : 
+// Object
 
+const  dislplayplamtdetail=(card)=>{
+ console.log(card);
+ const detailbox=document.getElementById("detailscontainer")
+  detailbox.innerHTML=`
+   <div>
+        <h1 class="text-lg font-bold">${card.name}</h1>
+    <img class="rounded-md h-[230px] w-[450px] " src="${card.image}" alt="">
+    <p class=""><span class="font-semibold py-2">Category: ${card.category}</span></p>
+    <p class=""><span class="font-semibold py-2">Price:${card.price} </span></p>
+    <p class="py-4"><span class="font-semibold py-1">Description:${card.description} </span>Press ESC key or click the button below to close</p>
+
+    </div>`
+  document.getElementById("my_modal_5").showModal();
+
+}
